@@ -1,0 +1,27 @@
+GET http://localhost:3004/ 
+
+
+#######
+
+POST http://localhost:3004/
+Content-Type: application/json
+
+{
+    "isChecked": true ,
+    "work": "Learn PHP"
+}
+
+#########
+
+
+DELETE http://localhost:3004/todo/22
+
+
+#######
+
+DELETE http://localhost:3004/delete/all
+
+
+#######
+
+PUT http://localhost:3004/todo/28?isChecked=true
