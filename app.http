@@ -25,3 +25,25 @@ DELETE http://localhost:3004/delete/all
 #######
 
 PUT http://localhost:3004/todo/28?isChecked=true
+
+
+######
+
+GET http://localhost:3004/bookmark
+
+#########
+
+POST http://localhost:3004/bookmark
+Content-Type: application/json 
+
+{
+    "webLogo":
+      "https://dashboard.render.com/web/srv-ckbctb6smu8c739bd1a0/jobs",
+    "url": "https://dashboard.render.com/web/srv-ckbctb6smu8c739bd1a0/jobs",
+    "displayText": "Render backend Publisher"
+}
+
+###########
+
+
+DELETE http://localhost:3004/bookmark/del/9
