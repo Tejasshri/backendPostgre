@@ -242,3 +242,12 @@ app.get("/check/pass/my", userAuthentication, async (request, response) => {
   const dbResponse = await db.all(query);
   response.send(dbResponse);
 });
+
+app.get(
+  "/bookmark/user/name",
+  userAuthentication,
+  async (request, response) => {
+    const encryptedName = btoa(request.username);
+    response.send(encryptedName);
+  }
+);
