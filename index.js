@@ -35,13 +35,11 @@ initilizeDBAndServer();
 const userAuthentication = (request, response, next) => {
   try {
     const authorization = request.headers.authorization;
-    console.log({ authorization });
     let token;
     if (authorization !== undefined) {
       token = authorization.split(" ")[1];
     }
     if (token === undefined) {
-      console.log("Triggered", token);
       response.status(400);
       response.send({ msg: "Invalid Token" });
     } else {
