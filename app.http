@@ -47,3 +47,33 @@ Content-Type: application/json
 
 
 DELETE http://localhost:3004/bookmark/del/9
+
+
+###########
+
+GET http://localhost:3004/check/pass/my 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvaG5uYmpqZGQiLCJ1c2VyX2lkIjoxNCwiaWF0IjoxNjk2MTQ2NjAxfQ.6RIvR0TeROy7ElBNiMwdVFUjD7uwnnpdfuXlylq23Bs
+
+###########
+
+POST http://localhost:3004/register/
+Content-Type:  application/json 
+
+{
+  "username": "tejas",
+  "password": "tejas1234",
+  "mobileNo": 7895441429,
+  "dob": "08-08-2003"
+}
+
+
+
+###########
+
+POST http://localhost:3004/login
+Content-Type:  application/json 
+
+{
+  "username": "Johnnbjjdd",
+  "password": "tejas1234"
+}
