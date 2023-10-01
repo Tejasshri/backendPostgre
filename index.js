@@ -248,6 +248,6 @@ app.get(
   userAuthentication,
   async (request, response) => {
     const encryptedName = btoa(request.username);
-    response.send(encryptedName);
+    response.send({ value: encryptedName });
   }
 );
