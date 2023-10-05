@@ -15,6 +15,8 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
+//External DB URL:  postgres://mydb_avgf_user:iLVoIHBWmX6dOScVcGS7SA2ilSpbfWmd@dpg-ckdsqhtjhfbs73803ts0-a.oregon-postgres.render.com/mydb_avgf
+
 const pool = new Pool({
   host: "postgres://dpg-ckdsqhtjhfbs73803ts0-a.oregon-postgres.render.com",
   port: 5432,
