@@ -40,7 +40,7 @@ const userAuthentication = (request, response, next) => {
     }
     if (token === undefined) {
       response.status(400);
-      response.send({ msg: "Invalid Token" });
+      response.send({ msg: "Missing Token" });
     } else {
       jwt.verify(token, "XXYY", (err, payload) => {
         if (err) {
@@ -265,3 +265,45 @@ app.delete("/todolist/todo/:id", async (request, response) => {
   await db.query(query);
   response.send({ statusCode: 200, msg: "Deleted" });
 });
+
+const adminBlocking = async (request, response, next) => {
+  try {
+    const { userId } = request;
+    const blockingQuery = `SELECT * FROM admin WHERE admin_id = ${userId}`;
+    const dbResponse = await db.query(blockingQuery);
+    if (dbResponse.rows.length !== 0) {
+      next();
+    } else {
+      response.status(401);
+      response.send({ msg: "UnAuthorized" });
+    }
+  } catch (error) {
+    console.log(`Error occured in API: ${error}`);
+    response.send({ msg: "Server Error", statusCode: 500 });
+  }
+};
+
+app.get(
+  "/admin/block",
+  userAuthentication,
+  adminBlocking,
+  async (request, response) => {
+    try {
+      const query1 = "SELECT * FROM bookmark";
+      const query2 = "SELECT * FROM user_data";
+      const query3 = `SELECT * FROM bookmark FULL JOIN
+    user_data ON bookmark.user_id = user_data.id 
+    ORDER BY user_data.id ASC`;
+      const bookmarkList = await db.query(query1);
+      const userList = await db.query(query2);
+      const combineList = await db.query(query3);
+      response.send({
+        bookmarkList: bookmarkList.rows,
+        userList: userList.rows,
+        combineList: combineList.rows,
+      });
+    } catch (error) {
+      console.log(`Error occured in admin API: ${error}`);
+    }
+  }
+);

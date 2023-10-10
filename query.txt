@@ -5,3 +5,14 @@ CREATE TABLE user_data(
 	mobile_no VARCHAR(10),
 	dob DATE
 );
+
+
+CREATE TABLE ADMIN (
+	admin_id INT,
+	mobile_no VARCHAR(10)
+) ;
+
+INSERT INTO admin
+	(admin_id, mobile_no) 
+VALUES
+	(6, '7895441429');

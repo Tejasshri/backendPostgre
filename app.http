@@ -88,3 +88,7 @@ Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRl
 
 
 #######
+
+
+GET http://localhost:3004/admin/block
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlamFzIiwidXNlcl9pZCI6NiwiaWF0IjoxNjk2OTY3OTkwfQ.4RUqi01FhGh2Lwu-wzEIoaFuEE8RF7sW1ktslz9DqzU
