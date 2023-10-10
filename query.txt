@@ -1,0 +1,7 @@
+CREATE TABLE user_data(
+	id serial ,
+	username TEXT NOT NULL UNIQUE,
+	password TEXT,
+	mobile_no VARCHAR(10),
+	dob DATE
+);
