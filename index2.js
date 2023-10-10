@@ -215,6 +215,23 @@ app.delete(
   }
 );
 
+app.get("/bookmark", userAuthentication, async (request, response) => {
+  try {
+    const query = `
+      SELECT 
+        id,
+        web_logo as webLogo,
+        url,
+        display_text as displayText
+      FROM bookmark ;
+    `;
+    const bookMarkList = await db.query(query);
+    response.send(bookMarkList.rows);
+  } catch (error) {
+    console.log(`Error occured in API: ${error}`);
+  }
+});
+
 //// Writing Todo APi
 
 app.post("/todolist", async (request, response) => {
