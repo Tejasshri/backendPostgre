@@ -34,11 +34,11 @@ initilizeDBAndServer();
 
 const updateTime = async (id) => {
   try {
-    const time = format(new Date(), "MM/dd/yyyy");
+    const date = new Date();
     const query = `
       UPDATE user_data
-      SET login_time = ${time}
-      WHERE id = ${id}
+      SET last_update = '${date}'
+      WHERE id = ${id} ;
     `;
     const response = await db.query(query);
     console.log("Okay");
