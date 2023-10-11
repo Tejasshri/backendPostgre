@@ -31,6 +31,20 @@ const initilizeDBAndServer = async () => {
 
 initilizeDBAndServer();
 
+const updateTime = async (id) => {
+  try {
+    const query = `
+      UPDATE user_data
+      SET login_time = ${new Date()}
+      WHERE id = ${id}
+    `;
+    const response = await db.query(query);
+    console.log("Okay");
+  } catch (error) {
+    console.log(`Error in set datetime ${error}`);
+  }
+};
+
 const userAuthentication = (request, response, next) => {
   try {
     const authorization = request.headers.authorization;
@@ -48,6 +62,7 @@ const userAuthentication = (request, response, next) => {
           response.send({ msg: "Invalid Token" });
         } else {
           request.userId = payload.user_id;
+          updateTime(payload.user_id);
           request.username = payload.username;
           next();
         }
