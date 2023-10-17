@@ -239,7 +239,8 @@ app.get("/bookmark", userAuthentication, async (request, response) => {
         id,
         web_logo as webLogo,
         url,
-        display_text as displayText
+        display_text as displayText,
+        category_id as categoryId
       FROM bookmark ;
     `;
     const bookMarkList = await db.query(query);

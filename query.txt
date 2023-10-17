@@ -20,3 +20,32 @@ VALUES
 
 ALTER TABLE user_data 
 ADD login_time DATE ;
+
+
+CREATE TABLE bookmark (
+	id SERIAL UNIQUE, 
+	web_logo TEXT,
+	url TEXT,
+	display_text TEXT,
+	user_id BIGINT,
+	FOREIGN KEY(user_id) REFERENCES user_data(id) ON UPDATE CASCADE ON DELETE CASCADE 
+);
+
+-- CREATE TABLE category (
+-- 	id SERIAL,
+-- 	name TEXT UNIQUE NOT NULL,
+-- 	user_id TEXT
+-- )
+
+
+INSErT INTO category (name, user_id) 
+VALUES 
+	('Websites', 6) ;
+
+-- ALTER TABLE bookmark_copy
+-- DROP COLUMN category_id ;
+
+-- ALTER TABLE bookmark_copy 
+-- ADD COLUMN category_id INT DEFAULT 1;
+
+SELECT * FROM bookmark_copy ;
