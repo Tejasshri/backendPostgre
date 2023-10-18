@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-const port = process.env.PORT || 3004;
+const port = process.env.PORT || 3005;
 const dbPath = path.join(__dirname, "todoApplication.db");
 let db;
 
@@ -172,10 +172,15 @@ app.get(
 );
 
 app.post("/bookmark", userAuthentication, async (request, response) => {
-  const { webLogo = "", url = "", displayText = "" } = request.body;
+  const {
+    webLogo = "",
+    url = "",
+    displayText = "",
+    categoryId = 1,
+  } = request.body;
   const { userId } = request;
   console.log("UserId: ", userId);
-  console.log(webLogo, url, displayText);
+  console.log(webLogo, url, displayText, categoryId);
   const check = await db.query(`
     SELECT * FROM bookmark
     WHERE url = '${url}' ;
@@ -183,9 +188,9 @@ app.post("/bookmark", userAuthentication, async (request, response) => {
   if (check.rows.length === 0) {
     const query = ` 
         INSERT INTO bookmark 
-          (web_logo, url, display_text, user_id)
+          (web_logo, url, display_text, user_id, category_id)
         VALUES
-          ('${webLogo}', '${url}', '${displayText}', ${userId}) ;
+          ('${webLogo}', '${url}', '${displayText}', ${userId}, ${categoryId}) ;
       `;
     const data = await db.query(query);
     response.send({ statusCode: 200, msg: "Bookmark added successfully" });
@@ -325,3 +330,12 @@ app.get(
     }
   }
 );
+
+app.get("/server/okay", async (request, response) => {
+  try {
+    console.log('Okay Started')
+    response.send({ msg: "Okay Started" });
+  } catch (error) {
+    console.log(`Error got in Server Check: ${error}`);
+  }
+});
