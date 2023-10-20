@@ -394,13 +394,17 @@ io.use((socket, next) => {
 
 const userList = {};
 io.on("connection", (socket) => {
-  socket.once("user-joined", (name) => {
+  socket.on("user-joined", (name) => {
     userList[socket.id] = name;
-    // console.log(`User Joined`, new Date());
+    socket.broadcast.emit("user-joined", "someone joined");
   });
 
   socket.on("send", (data) => {
     socket.broadcast.emit("update", { ...data, position: "left" });
     // console.log(data);
+  });
+
+  socket.on("disconnect", () => {
+    socket.broadcast.emit("user-left", "user left");
   });
 });
