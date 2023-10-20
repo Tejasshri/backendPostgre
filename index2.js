@@ -5,16 +5,19 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Pool } = require("pg");
 const { format } = "date-fns";
+const { Server } = require("socket.io");
 
-const { request } = require("http");
+const { request, createServer } = require("http");
 const { log } = require("console");
+const { Socket } = require("dgram");
+const { Database } = require("sqlite3");
 
 const app = express();
+const server = createServer(app);
 
 app.use(cors());
 app.use(express.json());
-const port = process.env.PORT || 3005;
-const dbPath = path.join(__dirname, "todoApplication.db");
+const port = process.env.PORT || 3004;
 let db;
 
 const initilizeDBAndServer = async () => {
@@ -23,7 +26,9 @@ const initilizeDBAndServer = async () => {
       connectionString:
         "postgres://mydb_avgf_user:iLVoIHBWmX6dOScVcGS7SA2ilSpbfWmd@dpg-ckdsqhtjhfbs73803ts0-a.oregon-postgres.render.com/mydb_avgf?ssl=true",
     });
-    app.listen(port, () => console.log(`Server is running on port: ${port}`));
+    server.listen(port, () =>
+      console.log(`Server is running on port: ${port}`)
+    );
   } catch (err) {
     console.log(`Error occured in Server Starting: ${err}`);
     process.exit(1);
@@ -333,9 +338,69 @@ app.get(
 
 app.get("/server/okay", async (request, response) => {
   try {
-    console.log('Okay Started')
+    console.log("Okay Started");
     response.send({ msg: "Okay Started" });
   } catch (error) {
     console.log(`Error got in Server Check: ${error}`);
   }
+});
+
+app.get("/chat/msg", userAuthentication, async (request, response) => {
+  try {
+    const { userId } = request;
+    const query = `
+      SELECT message,
+        CASE 
+          WHEN user_id = ${userId} THEN 'right' 
+          ELSE 'left' 
+        END AS position,
+        user_data.username As username,
+        chat_time AS chatTime
+      FROM
+       chat_data JOIN user_data ON user_data.id = chat_data.user_id`;
+    const dbResponse = await db.query(query);
+    response.send(dbResponse.rows);
+  } catch (error) {
+    console.log(`Error got in API: ${error}`);
+  }
+});
+
+app.post("/chat/msg", userAuthentication, async (request, response) => {
+  try {
+    const { message } = request.body;
+    const { userId } = request;
+    const query = `
+    INSERT INTO chat_data 
+	    (message, user_id, chat_time)
+    VALUES
+	    ('${message}', ${userId}, '${new Date()}');
+    `;
+    const dbResponse = await db.query(query);
+    response.send({ msg: "Okay", statusCode: 200 });
+  } catch (error) {
+    console.log(`Error occured in chat: ${error}`);
+  }
+});
+
+const io = new Server(server, {
+  cors: {
+    origin: process.env.NODE_ENV === "production" ? false : "*",
+  },
+});
+
+io.use((socket, next) => {
+  next();
+});
+
+const userList = {};
+io.on("connection", (socket) => {
+  socket.once("user-joined", (name) => {
+    userList[socket.id] = name;
+    // console.log(`User Joined`, new Date());
+  });
+
+  socket.on("send", (data) => {
+    socket.broadcast.emit("update", { ...data, position: "left" });
+    // console.log(data);
+  });
 });

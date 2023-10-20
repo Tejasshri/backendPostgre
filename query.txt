@@ -49,3 +49,19 @@ VALUES
 -- ADD COLUMN category_id INT DEFAULT 1;
 
 SELECT * FROM bookmark_copy ;
+
+CREATE TABLE chat_data (
+	id SERIAL PRIMARY KEY ,
+	message TEXT,
+	user_id INT NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES user_data 
+	ON DELETE CASCADE 
+	ON UPDATE CASCADE
+)  ;
+
+
+INSERT INTO chat_data 
+	(message, user_id)
+VALUES
+	('Hello Guys This is chat app for you', 6)
+;
