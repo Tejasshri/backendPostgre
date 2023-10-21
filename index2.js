@@ -7,9 +7,7 @@ const { Pool } = require("pg");
 const { format } = "date-fns";
 const { Server } = require("socket.io");
 
-const { request, createServer } = require("http");
-const { log } = require("console");
-const { Socket } = require("dgram");
+const { createServer } = require("http");
 const { Database } = require("sqlite3");
 
 const app = express();
@@ -382,11 +380,20 @@ app.post("/chat/msg", userAuthentication, async (request, response) => {
   }
 });
 
+// const io = new Server(server, {
+//   cors: {
+//     origin: process.env.NODE_ENV === "production" ? false : "*",
+//   },
+// });
+
 const io = new Server(server, {
   cors: {
-    origin: process.env.NODE_ENV === "production" ? false : "*",
+    origin: ["http://localhost:3000", "https://bookmarktej.ccbp.tech/"],
+    methods: ["GET", "POST"],
   },
 });
+
+// origin: process.env.NODE_ENV === "production" ? false : "http://localhost:3005/",
 
 io.use((socket, next) => {
   next();
@@ -394,9 +401,10 @@ io.use((socket, next) => {
 
 const userList = {};
 io.on("connection", (socket) => {
-  socket.on("user-joined", (name) => {
+  socket.once("user-joined", (name) => {
     userList[socket.id] = name;
     socket.broadcast.emit("user-joined", "someone joined");
+    console.log("user joined");
   });
 
   socket.on("send", (data) => {
