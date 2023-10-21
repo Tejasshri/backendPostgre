@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Pool } = require("pg");
 const { format } = "date-fns";
-const { Server } = require("socket.io");
+const socketIo = require("socket.io");
 
 const { createServer } = require("http");
 const { Database } = require("sqlite3");
@@ -386,7 +386,7 @@ app.post("/chat/msg", userAuthentication, async (request, response) => {
 //   },
 // });
 
-const io = new Server(server, {
+const io = socketIo(server, {
   cors: {
     origin: ["http://localhost:3000", "https://bookmarktej.ccbp.tech/"],
     methods: ["GET", "POST"],
@@ -409,7 +409,7 @@ io.on("connection", (socket) => {
 
   socket.on("send", (data) => {
     socket.broadcast.emit("update", { ...data, position: "left" });
-    // console.log(data);
+    console.log("Message sended");
   });
 
   socket.on("disconnect", () => {
