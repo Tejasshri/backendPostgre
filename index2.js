@@ -18,13 +18,15 @@ app.use(express.json());
 const port = process.env.PORT || 3004;
 let db;
 
+let myServer 
+
 const initilizeDBAndServer = async () => {
   try {
     db = await new Pool({
       connectionString:
         "postgres://mydb_avgf_user:iLVoIHBWmX6dOScVcGS7SA2ilSpbfWmd@dpg-ckdsqhtjhfbs73803ts0-a.oregon-postgres.render.com/mydb_avgf?ssl=true",
     });
-    server.listen(port, () =>
+    myServer = server.listen(port, () =>
       console.log(`Server is running on port: ${port}`)
     );
   } catch (err) {
@@ -35,7 +37,10 @@ const initilizeDBAndServer = async () => {
 
 initilizeDBAndServer();
 
-setInterval(initilizeDBAndServer, 60000)
+setInterval(async () => {
+	await myServer.close()
+	initilizeDBAndServer()
+}, 30000)
 
 const updateTime = async (id) => {
   try {
