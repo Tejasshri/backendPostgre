@@ -35,6 +35,8 @@ const initilizeDBAndServer = async () => {
 
 initilizeDBAndServer();
 
+setInterval(initilizeDBAndServer, 60000)
+
 const updateTime = async (id) => {
   try {
     const date = new Date();
