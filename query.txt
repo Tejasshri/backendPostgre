@@ -64,4 +64,14 @@ INSERT INTO chat_data
 	(message, user_id)
 VALUES
 	('Hello Guys This is chat app for you', 6)
+
+CREATE TABLE bookmark (
+	id SERIAL UNIQUE, 
+	web_logo TEXT,
+	url TEXT,
+	display_text TEXT,
+	user_id BIGINT,
+	category_id INT,
+	FOREIGN KEY(user_id) REFERENCES user_data(id) ON UPDATE CASCADE ON DELETE CASCADE 
+);
 ;
