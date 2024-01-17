@@ -385,6 +385,16 @@ app.get("/server/okay", async (request, response) => {
 app.get("/chat/msg", userAuthentication, async (request, response) => {
   try {
     const { userId } = request;
+    await db.query(`
+	    CREATE TABLE IF NOT EXISTS chat_data (
+		id SERIAL PRIMARY KEY ,
+		message TEXT,
+		user_id INT NOT NULL,
+		FOREIGN KEY (user_id) REFERENCES user_data 
+		ON DELETE CASCADE 
+		ON UPDATE CASCADE
+	   )  ;
+    `)
     const query = `
       SELECT message,
         CASE 
