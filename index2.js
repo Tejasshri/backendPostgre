@@ -22,9 +22,9 @@ let myServer
 
 const initilizeDBAndServer = async () => {
   try {
-    db = await new Pool({
+    db = await new Pool({	    
       connectionString:
-        "postgres://mydb_avgf_user:iLVoIHBWmX6dOScVcGS7SA2ilSpbfWmd@dpg-ckdsqhtjhfbs73803ts0-a.oregon-postgres.render.com/mydb_avgf?ssl=true",
+        "postgres://database_ox5f_user:UzmbtXNbp4HU4mbd1RF1pGCcz1FVx8bF@dpg-cme0i5ed3nmc73dns450-a.oregon-postgres.render.com/database_ox5f?ssl=true",
     });
     myServer = server.listen(port, () =>
       console.log(`Server is running on port: ${port}`)
