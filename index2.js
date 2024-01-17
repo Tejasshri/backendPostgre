@@ -217,6 +217,17 @@ app.post("/bookmark", userAuthentication, async (request, response) => {
     WHERE url = '${url}' ;
   `);
   if (check.rows.length === 0) {
+    await db.query(`
+	    CREATE TABLE IF NOT EXISTS bookmark (
+		id SERIAL UNIQUE, 
+		web_logo TEXT,
+		url TEXT,
+		display_text TEXT,
+		user_id BIGINT,
+		category_id INT,
+		FOREIGN KEY(user_id) REFERENCES user_data(id) ON UPDATE CASCADE ON DELETE CASCADE 
+	     );
+    `)
     const query = ` 
         INSERT INTO bookmark 
           (web_logo, url, display_text, user_id, category_id)
