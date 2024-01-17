@@ -26,6 +26,27 @@ const initilizeDBAndServer = async () => {
       connectionString:
         "postgres://database_ox5f_user:UzmbtXNbp4HU4mbd1RF1pGCcz1FVx8bF@dpg-cme0i5ed3nmc73dns450-a.oregon-postgres.render.com/database_ox5f?ssl=true",
     });
+    await db.exec(`
+	    CREATE TABLE IF NOT EXISTS user_data(
+		id serial PRIMARY KEY,
+		username TEXT NOT NULL UNIQUE,
+		password TEXT,
+		mobile_no VARCHAR(10),
+		dob DATE,
+		login_time DATE
+	    );
+    `)
+    await db.exec(`
+	    CREATE TABLE IF NOT EXISTS bookmark (
+		id SERIAL UNIQUE, 
+		web_logo TEXT,
+		url TEXT,
+		display_text TEXT,
+		user_id BIGINT,
+		category_id INT,
+		FOREIGN KEY(user_id) REFERENCES user_data(id) ON UPDATE CASCADE ON DELETE CASCADE 
+	     );
+    `)
     myServer = server.listen(port, () =>
       console.log(`Server is running on port: ${port}`)
     );
