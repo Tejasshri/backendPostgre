@@ -390,6 +390,7 @@ app.get("/chat/msg", userAuthentication, async (request, response) => {
 		id SERIAL PRIMARY KEY ,
 		message TEXT,
 		user_id INT NOT NULL,
+  		chat_time TEXT,
 		FOREIGN KEY (user_id) REFERENCES user_data 
 		ON DELETE CASCADE 
 		ON UPDATE CASCADE
