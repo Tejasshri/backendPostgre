@@ -33,7 +33,7 @@ const initilizeDBAndServer = async () => {
 		password TEXT,
 		mobile_no VARCHAR(10),
 		dob DATE,
-		login_time DATE
+		last_update TEXT
 	    );
     `)
     await db.query(`
