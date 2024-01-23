@@ -438,7 +438,7 @@ app.post("/chat/msg", userAuthentication, async (request, response) => {
 
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://bookmarktej.ccbp.tech/"],
+    origin: ["http://localhost:3000", "https://bookmarktej.ccbp.tech"],
     methods: ["GET", "POST"],
   },
 });
